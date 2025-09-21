@@ -212,23 +212,6 @@ bazel run //:gazelle                             # Auto-generate/update BUILD fi
 bazel test //:gazelle_python_manifest.test       # Test manifest integrity only
 ```
 
-### Automated UV Workflow
-
-For convenience, use the provided automation script:
-
-```bash
-# Run the complete UV workflow with one command
-./update_deps_uv.sh
-```
-
-This script automatically:
-1. ⚡ Compiles dependencies with UV (super fast!)
-2. 📋 Updates requirements.txt 
-3. 🗺️ Regenerates Python manifest
-4. 🏗️ Updates BUILD files
-5. 🧪 Tests manifest integrity
-6. 🔨 Verifies all services build
-
 ### How Gazelle Works
 
 1. **Requirements Compilation**: `requirements.in` → `requirements.txt` (locked versions)
