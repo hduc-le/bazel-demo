@@ -1,4 +1,8 @@
-load("@rules_python//python:defs.bzl", "py_library")
+load("@aspect_rules_py//py:defs.bzl", "py_library")
+
+# gazelle:map_kind py_library py_library @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_binary py_binary @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_test py_test @aspect_rules_py//py:defs.bzl
 
 py_library(
     name = "src",

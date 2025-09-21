@@ -43,3 +43,20 @@ bazel_dep(name = "rules_python_gazelle_plugin", version = "1.6.1")
 
 # UV integration for fast Python dependency management
 bazel_dep(name = "rules_uv", version = "0.88.0")
+
+bazel_dep(name = "aspect_rules_py", version = "1.6.4-rc1")
+
+bazel_dep(name = "rules_oci", version = "2.2.6")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+oci.pull(
+    name = "python_3_11",
+    image = "python:3.11-slim-bookworm",
+    digest = "sha256:873f91540d53b36327ed4fb018c9669107a4e2a676719720edb4209c4b15d029",
+    platforms = [
+        "linux/arm64/v8",
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "python_3_11")

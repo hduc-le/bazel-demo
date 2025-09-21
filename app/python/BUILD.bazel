@@ -1,11 +1,16 @@
-load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_image_layer", "py_library")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
 
 # Gazelle directives for auto-generating BUILD files
 # gazelle:python_root
+# gazelle:map_kind py_library py_library @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_binary py_binary @aspect_rules_py//py:defs.bzl
+# gazelle:map_kind py_test py_test @aspect_rules_py//py:defs.bzl
 
 py_binary(
-    name = "main",
+    name = "main_binary",
     srcs = ["main.py"],
+    imports = ["."],
     visibility = ["//:__subpackages__"],
     deps = [
         "//app/python/src",
@@ -19,8 +24,9 @@ py_binary(
 )
 
 py_library(
-    name = "python",
+    name = "main_library",
     srcs = ["main.py"],
+    imports = ["."],
     visibility = ["//:__subpackages__"],
     deps = [
         "//app/python/src",
@@ -31,4 +37,32 @@ py_library(
         "@pip//types_requests",
         "@pip//uvicorn",
     ],
+)
+
+py_image_layer(
+    name = "layers",
+    binary = ":main_binary",
+)
+
+oci_image(
+    name = "main_image",
+    # This is defined by an oci.pull() call in /MODULE.bazel
+    base = "@python_3_11",
+    entrypoint = ["main_binary"],
+    tars = [":layers"],
+)
+
+# To build the image and load it into it into a local runtime:
+# bazel build //app/python:main_tarball
+# docker run --rm -p 8000:8000 gcr.io/python-demo:latest
+oci_load(
+    name = "main_tarball",
+    image = ":main_image",
+    repo_tags = ["gcr.io/python-demo:latest"],
+)
+
+filegroup(
+    name = "main_tarball.tar",
+    srcs = [":main_tarball"],
+    output_group = "tarball",
 )
