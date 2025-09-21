@@ -1,0 +1,17 @@
+# Java toolchain configuration - Use remotejdk to avoid path issues
+build --java_runtime_version=remotejdk_21
+build --tool_java_runtime_version=remotejdk_21
+
+# Enable legacy external runfiles layout
+build --legacy_external_runfiles
+
+# Use local JDK for better compatibility
+common --enable_platform_specific_config
+
+# Optional: Enable worker strategy for better performance
+build --strategy=Javac=worker
+build --strategy=KotlinCompile=worker
+
+# Common flags for better error reporting
+build --verbose_failures
+build --announce_rc
