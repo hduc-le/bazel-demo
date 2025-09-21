@@ -18,34 +18,34 @@ compile_pip_requirements(
 
 # ===================== UV-based dependency compilation =====================
 # UV-based dependency compilation (much faster than standard pip-tools)
-# if you have update the `requirements.in` file, you need to update the `requirements_uv.txt` file
-# make sure the requirements_uv.txt file is exists before running this
-# run bazel run //:uv_compile_requirements to update the requirements_uv.txt file
+# if you have update the `requirements.in` file, you need to update the `requirements.txt` file
+# make sure the requirements.txt file is exists before running this
+# run bazel run //:uv_compile_requirements to update the requirements.txt file
 pip_compile(
     name = "uv_compile_requirements",
     requirements_in = "requirements.in",
-    requirements_txt = "requirements_uv.txt",
+    requirements_txt = "requirements.txt",
 )
 
 # Create virtual environment using UV (optional for development)
 # run bazel run //:create_venv to create the virtual environment
 create_venv(
     name = "create_venv",
-    requirements_txt = "//:requirements_uv.txt", # default
+    requirements_txt = "//:requirements.txt", # default
     destination_folder = "venv",  # Specify custom path for virtual environment
 )
 
 # Alternative: Create development environment with different path
 create_venv(
     name = "create_dev_venv",
-    requirements_txt = "//:requirements_uv.txt",
+    requirements_txt = "//:requirements.txt",
     destination_folder = ".venv",  # Hidden directory (common convention)
 )
 
 # Alternative: Create production-like environment
 create_venv(
     name = "create_prod_venv", 
-    requirements_txt = "//:requirements_uv.txt",  # Use traditional requirements
+    requirements_txt = "//:requirements.txt",  # Use traditional requirements
     destination_folder = "prod_venv",
 )
 
@@ -134,7 +134,7 @@ gazelle_python_manifest(
     # fast because it just has to check an integrity field. If not provided,
     # the integrity field is not added to the manifest which can help avoid
     # merge conflicts in large repos.
-    requirements = "//:requirements.txt", # or "//:requirements_uv.txt"
+    requirements = "//:requirements.txt",
 )
 
 gazelle_binary(

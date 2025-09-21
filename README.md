@@ -139,22 +139,17 @@ When you need to add new Python packages to your project, you can choose between
    bazel run //:uv_compile_requirements
    ```
 
-3. **Copy UV requirements**: Use the UV-generated requirements for the main pip setup
-   ```bash
-   cp requirements_uv.txt requirements.txt
-   ```
-
-4. **Update Python manifest**: Regenerate the Gazelle Python manifest
+3. **Update Python manifest**: Regenerate the Gazelle Python manifest
    ```bash
    bazel run //:gazelle_python_manifest.update
    ```
 
-5. **Auto-generate BUILD files**: Update BUILD files with new dependencies
+4. **Auto-generate BUILD files**: Update BUILD files with new dependencies
    ```bash
    bazel run //:gazelle
    ```
 
-6. **Verify everything works**: Test that the manifest is current and build succeeds
+5. **Verify everything works**: Test that the manifest is current and build succeeds
    ```bash
    bazel test //:gazelle_python_manifest.test
    bazel build //:all_services
@@ -194,8 +189,7 @@ When you need to add new Python packages to your project, you can choose between
 
 ```bash
 # Complete workflow for dependency updates (UV - FAST)
-bazel run //:uv_compile_requirements             # Compile requirements.in → requirements_uv.txt (UV)
-cp requirements_uv.txt requirements.txt          # Copy UV output to main requirements
+bazel run //:uv_compile_requirements             # Compile requirements.in → requirements.txt (UV)
 bazel run //:gazelle_python_manifest.update      # Update Python dependencies manifest
 bazel run //:gazelle                             # Auto-generate/update BUILD files for Python
 bazel test //:gazelle_python_manifest.test       # Test that the manifest is up to date
@@ -249,8 +243,8 @@ This script automatically:
 ```mermaid
 graph TD
     A[requirements.in] --> B[bazel run //:uv_compile_requirements]
-    B --> C[requirements_uv.txt]
-    C --> D[cp requirements_uv.txt requirements.txt]
+    B --> C[requirements.txt]
+    C --> D[cp requirements.txt requirements.txt]
     D --> E[bazel run //:gazelle_python_manifest.update]
     E --> F[gazelle_python.yaml]
     F --> G[bazel run //:gazelle]
@@ -300,19 +294,19 @@ You can create multiple virtual environments with different configurations:
 
 | Target | Command | Directory | Purpose | Requirements File |
 |--------|---------|-----------|---------|-------------------|
-| `create_venv` | `bazel run //:create_venv` | `./venv/` | Default development | `requirements_uv.txt` |
-| `create_dev_venv` | `bazel run //:create_dev_venv` | `./.venv/` | Hidden dev environment | `requirements_uv.txt` |
+| `create_venv` | `bazel run //:create_venv` | `./venv/` | Default development | `requirements.txt` |
+| `create_dev_venv` | `bazel run //:create_dev_venv` | `./.venv/` | Hidden dev environment | `requirements.txt` |
 | `create_prod_venv` | `bazel run //:create_prod_venv` | `./prod_venv/` | Production-like | `requirements.txt` |
 
 **Custom Virtual Environment Paths:**
 
-You can customize the virtual environment path by modifying the `venv_directory` parameter in the BUILD file:
+You can customize the virtual environment path by modifying the `destination_folder` parameter in the BUILD file:
 
 ```python
 create_venv(
     name = "my_custom_venv",
-    requirements_txt = "//:requirements_uv.txt",
-    venv_directory = "my_custom_path",  # Custom path
+    requirements_txt = "//:requirements.txt",
+    destination_folder = "my_custom_path",  # Custom path
 )
 ```
 
@@ -332,7 +326,6 @@ echo "scikit-learn==1.3.0" >> requirements.in
 
 # 2. Run the complete update workflow with UV
 bazel run //:uv_compile_requirements
-cp requirements_uv.txt requirements.txt
 bazel run //:gazelle_python_manifest.update  
 bazel run //:gazelle
 
@@ -349,7 +342,6 @@ echo "flask-cors==4.0.0" >> requirements.in
 
 # 2. Update dependencies and BUILD files with UV
 bazel run //:uv_compile_requirements
-cp requirements_uv.txt requirements.txt
 bazel run //:gazelle_python_manifest.update
 bazel run //:gazelle
 
