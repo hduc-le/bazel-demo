@@ -1,0 +1,44 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+bazel_dep(name = "rules_python", version = "1.6.1")
+bazel_dep(name = "rules_kotlin", version = "2.0.0")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    python_version = "3.11",
+)
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "pip",
+    python_version = "3.11",
+    requirements_lock = "//:requirements.txt",
+)
+
+use_repo(pip, "pip")
+
+# Maven dependencies for Kotlin
+bazel_dep(name = "rules_jvm_external", version = "6.1")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "com.google.code.gson:gson:2.10.1",
+        "com.squareup.okhttp3:okhttp:4.11.0",
+    ],
+)
+use_repo(maven, "maven")
+
+# The Gazelle plugin depends on Gazelle.
+bazel_dep(name = "gazelle", version = "0.33.0", repo_name = "bazel_gazelle")
+
+# Typically rules_python_gazelle_plugin is version matched to rules_python.
+bazel_dep(name = "rules_python_gazelle_plugin", version = "1.6.1")
+
+# UV integration for fast Python dependency management
+bazel_dep(name = "rules_uv", version = "0.88.0")

@@ -1,0 +1,29 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+py_binary(
+    name = "main",
+    srcs = ["main.py"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@pip//fastapi",
+        "@pip//numpy",
+        "@pip//pandas",
+        "@pip//requests",
+        "@pip//types_requests",
+        "@pip//uvicorn",
+    ],
+)
+
+py_library(
+    name = "python",
+    srcs = ["main.py"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@pip//fastapi",
+        "@pip//numpy",
+        "@pip//pandas",
+        "@pip//requests",
+        "@pip//types_requests",
+        "@pip//uvicorn",
+    ],
+)
