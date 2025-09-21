@@ -244,12 +244,11 @@ This script automatically:
 graph TD
     A[requirements.in] --> B[bazel run //:uv_compile_requirements]
     B --> C[requirements.txt]
-    C --> D[cp requirements.txt requirements.txt]
-    D --> E[bazel run //:gazelle_python_manifest.update]
-    E --> F[gazelle_python.yaml]
-    F --> G[bazel run //:gazelle]
-    G --> H[BUILD.bazel files]
-    H --> I[bazel test //:gazelle_python_manifest.test]
+    C --> D[bazel run //:gazelle_python_manifest.update]
+    D --> E[gazelle_python.yaml]
+    E --> F[bazel run //:gazelle]
+    F --> G[BUILD.bazel files]
+    G --> H[bazel test //:gazelle_python_manifest.test]
 ```
 
 **Traditional Workflow:**
