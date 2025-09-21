@@ -1,10 +1,14 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
+# Gazelle directives for auto-generating BUILD files
+# gazelle:python_root
+
 py_binary(
     name = "main",
     srcs = ["main.py"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//app/python/src",
         "@pip//fastapi",
         "@pip//numpy",
         "@pip//pandas",
@@ -19,6 +23,7 @@ py_library(
     srcs = ["main.py"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//app/python/src",
         "@pip//fastapi",
         "@pip//numpy",
         "@pip//pandas",

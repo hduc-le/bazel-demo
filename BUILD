@@ -31,22 +31,22 @@ pip_compile(
 # run bazel run //:create_venv to create the virtual environment
 create_venv(
     name = "create_venv",
-    requirements_txt = "//:requirements.txt", # default
     destination_folder = "venv",  # Specify custom path for virtual environment
+    requirements_txt = "//:requirements.txt",  # default
 )
 
 # Alternative: Create development environment with different path
 create_venv(
     name = "create_dev_venv",
-    requirements_txt = "//:requirements.txt",
     destination_folder = ".venv",  # Hidden directory (common convention)
+    requirements_txt = "//:requirements.txt",
 )
 
 # Alternative: Create production-like environment
 create_venv(
-    name = "create_prod_venv", 
-    requirements_txt = "//:requirements.txt",  # Use traditional requirements
+    name = "create_prod_venv",
     destination_folder = "prod_venv",
+    requirements_txt = "//:requirements.txt",  # Use traditional requirements
 )
 
 # ===================== Package group targets =====================

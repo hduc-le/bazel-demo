@@ -3,7 +3,7 @@ import uvicorn
 import requests
 import pandas as pd
 import numpy as np
-
+from src.utils import generate_random_int_data, generate_random_uniform_data
 from datetime import datetime
 from typing import Optional
 
@@ -45,8 +45,8 @@ def data_analysis():
     # Create sample data
     data = {
         "product": ["Laptop", "Phone", "Tablet", "Monitor"],
-        "sales": np.random.randint(100, 1000, 4),
-        "profit": np.random.uniform(0.1, 0.5, 4),
+        "sales": generate_random_int_data(),
+        "profit": generate_random_uniform_data(),
     }
 
     df = pd.DataFrame(data)
